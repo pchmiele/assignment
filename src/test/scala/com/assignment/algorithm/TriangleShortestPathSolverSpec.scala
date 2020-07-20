@@ -9,7 +9,7 @@ import com.assignment.domain._
 import org.scalatest.OptionValues
 
 class TriangleShortestPathSolverSpec extends AnyFlatSpec with Matchers with OptionValues {
-  it should "find no solution for invalid input (single row with no elements)" in new Context {
+  "findShortestPath" should "find no solution for invalid input (single row with no elements)" in new Context {
     val input = RowsInReverseOrder(
       NonEmptyList.one(
         List.empty

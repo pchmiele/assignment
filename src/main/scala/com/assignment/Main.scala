@@ -8,7 +8,7 @@ import com.assignment.program.{ConsoleParser, ConsoleSolutionRenderer, LiveConso
 object Main extends IOApp {
   def solve[F[_]: Sync]: F[Unit] = {
     val console = new LiveConsole[F]
-    val parser = new ConsoleParser[F]
+    val parser = new ConsoleParser[F](console)
     val solver = new TriangleShortestPathSolver[F]
     val renderer = new ConsoleSolutionRenderer[F](console)
 
@@ -21,6 +21,6 @@ object Main extends IOApp {
 
   override def run(args: List[String]): IO[ExitCode] =
     solve[IO]
-      .handleErrorWith { case e => IO(println(s"Application crushed with error: ${e.getLocalizedMessage}")).as(ExitCode.Error) }
+      .handleErrorWith { case e => IO(println(s"Application crushed with error: ${e.getMessage}")).as(ExitCode.Error) }
       .as(ExitCode.Success)
 }
