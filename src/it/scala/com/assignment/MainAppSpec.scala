@@ -32,6 +32,10 @@ class MainAppSpec extends AnyFlatSpec with Matchers with OptionValues {
     compare(s"InvalidReversedTree.txt", "#3 Row has different size (2) than expected (3)")
   }
 
+  it should "work correctly when invalid (with non-numeric characters) tree provided" in new Context {
+    compare(s"InvalidCharactersTree.txt", "#3 Row contains forbidden character (not a number)")
+  }
+
   it should "work correctly for large input" in new Context {
     lazy val expectedPath = List.fill(500)(1).mkString(" + ")
     compare(s"LargeTree.txt", s"Minimal path is: $expectedPath = 500")

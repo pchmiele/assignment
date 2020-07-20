@@ -15,8 +15,9 @@ class ConsoleParser[F[_]: Sync](console: Console[F], validator: Validation[F]) e
         Sync[F].fromOption(alreadyParsedLines.toNel.map(RowsInReverseOrder.apply), NoInputData)
       case Some(line) =>
         val words = line.split(" ")
-        val numbers = words.map(_.toInt).toList
         for {
+          _ <- validator.validateRow(words, currentRow)
+          numbers = words.map(_.toInt).toList
           _ <- validator.validateRowLength(numbers, currentRow)
           parsedLine <- parseLineByLine(numbers :: alreadyParsedLines, currentRow + 1)
         } yield parsedLine
