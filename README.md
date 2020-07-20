@@ -1,5 +1,5 @@
 ## Minimum/Maximum Triangle Paths - assignment
-Application reads from standard-input, tree in the following format:
+Application reads from standard-input a tree in the following format:
 ```
 1
 2 1
@@ -27,7 +27,7 @@ Application reads data from standard-input and prints results to standard-output
 sbt run
 ```
 
-If you want to run program with example tree as input use following command:
+If you want to run program with example tree as input, use following command:
 ```
 cat src/it/resources/SimpleTree.txt| sbt run
 ```
