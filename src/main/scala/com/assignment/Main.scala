@@ -3,10 +3,11 @@ package com.assignment
 import cats.implicits._
 import cats.effect.{ExitCode, IO, IOApp, Sync}
 import com.assignment.algorithm.TriangleShortestPathSolver
+import com.assignment.domain.NoInputData
 import com.assignment.program.{ConsoleParser, ConsoleSolutionRenderer, LiveConsole}
 
 object Main extends IOApp {
-  def solve[F[_]: Sync]: F[Unit] = {
+  private def solve[F[_]: Sync]: F[Unit] = {
     val console = new LiveConsole[F]
     val parser = new ConsoleParser[F](console)
     val solver = new TriangleShortestPathSolver[F]
@@ -19,8 +20,15 @@ object Main extends IOApp {
     } yield ()
   }
 
+  private def printAndExitAsError(message: String): IO[ExitCode] = {
+    IO(println(message)).as(ExitCode.Error)
+  }
+
   override def run(args: List[String]): IO[ExitCode] =
     solve[IO]
-      .handleErrorWith { case e => IO(println(s"Application crushed with error: ${e.getMessage}")).as(ExitCode.Error) }
+      .handleErrorWith {
+        case NoInputData => printAndExitAsError("No data provided. Could not find the minimal path.")
+        case e => IO(println(s"Application crushed with error: ${e.getMessage}")).as(ExitCode.Error)
+      }
       .as(ExitCode.Success)
 }

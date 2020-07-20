@@ -13,7 +13,15 @@ import scala.io.Source
 
 class MainAppSpec extends AnyFlatSpec with Matchers with OptionValues {
   "App" should "work correctly for example from assignment" in new Context {
-    compare(s"SimpleTree.txt", "Minimal path is = 7 + 6 + 3 + 2 = 18")
+    compare(s"SimpleTree.txt", "Minimal path is: 7 + 6 + 3 + 2 = 18")
+  }
+
+  it should "work correctly when no data provided" in new Context {
+    compare(s"EmptyTree.txt", "No data provided. Could not find the minimal path.")
+  }
+
+  it should "work correctly when single node tree provided" in new Context {
+    compare(s"SingleNodeTree.txt", "Minimal path is: 1")
   }
 
   trait Context {
