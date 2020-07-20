@@ -1,11 +1,11 @@
 ## Minimum/Maximum Triangle Paths - assignment
-Application reads tree in the following format:
+Application reads from standard-input, tree in the following format:
 ```
 1
 2 1
 3 1 2
 ```
-For given tree, application finds the shortest path from top node to bottom one and prints it on Standard Output.
+For given tree, application finds the shortest (minimal) path from top node to bottom one and prints it to standard-output.
 Result for example tree:
 ```
 Minimal path is: 1 + 1 + 1 = 3
@@ -21,7 +21,7 @@ Minimal path is: 1 + 1 + 1 = 3
  * [sbt](https://www.scala-sbt.org/download.html)
  
 ### How to run
-Application reads data from Standard Input and prints results to Standard Output
+Application reads data from standard-input and prints results to standard-output
 
 ```scala
 sbt run
