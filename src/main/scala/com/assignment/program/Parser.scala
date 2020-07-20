@@ -8,16 +8,19 @@ trait Parser[F[_]] {
   def parse(): F[RowsInReverseOrder]
 }
 
-class ConsoleParser[F[_]: Sync](console: Console[F]) extends Parser[F] {
-  private def parseLineByLine(alreadyParsedLines: List[List[Int]]): F[RowsInReverseOrder] =
+class ConsoleParser[F[_]: Sync](console: Console[F], validator: Validation[F]) extends Parser[F] {
+  private def parseLineByLine(alreadyParsedLines: List[List[Int]], currentRow: Int): F[RowsInReverseOrder] =
     console.getStrLn.flatMap {
       case None =>
         Sync[F].fromOption(alreadyParsedLines.toNel.map(RowsInReverseOrder.apply), NoInputData)
       case Some(line) =>
         val words = line.split(" ")
         val numbers = words.map(_.toInt).toList
-        parseLineByLine(numbers :: alreadyParsedLines)
+        for {
+          _ <- validator.validateRowLength(numbers, currentRow)
+          parsedLine <- parseLineByLine(numbers :: alreadyParsedLines, currentRow + 1)
+        } yield parsedLine
     }
 
-  override def parse(): F[RowsInReverseOrder] = parseLineByLine(List.empty)
+  override def parse(): F[RowsInReverseOrder] = parseLineByLine(List.empty, 1)
 }

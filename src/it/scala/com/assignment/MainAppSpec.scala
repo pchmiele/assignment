@@ -25,7 +25,11 @@ class MainAppSpec extends AnyFlatSpec with Matchers with OptionValues {
   }
 
   it should "work correctly when invalid (single row) tree provided" in new Context {
-    compare(s"InvalidSingleRowTree.txt", "Could not find a solution for given input data. Here is a reason why: For single row input it has to be of length == 1.")
+    compare(s"InvalidSingleRowTree.txt", "#1 Row has different size (5) than expected (1)")
+  }
+
+  it should "work correctly when invalid (reversed) tree provided" in new Context {
+    compare(s"InvalidReversedTree.txt", "#3 Row has different size (2) than expected (3)")
   }
 
   trait Context {

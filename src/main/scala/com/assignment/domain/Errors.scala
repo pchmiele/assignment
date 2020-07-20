@@ -4,3 +4,4 @@ sealed trait AssignmentError extends Throwable
 
 sealed trait ParsingError extends AssignmentError
 case object NoInputData extends ParsingError
+case class WrongRowLength(row: Int, rowLength: Int, expectedRowLength: Int) extends ParsingError
