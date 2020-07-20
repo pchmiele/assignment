@@ -4,7 +4,10 @@ case class RowsInReverseOrder(rows: Rows)
 
 sealed trait Solution
 case class MinimalPath(distance: Int, steps: List[Node]) extends Solution
-case class NoSolution(explanation: String) extends Solution
+
+sealed trait NoSolution extends Solution
+case object InvalidSingleRowTreeGiven extends NoSolution
+case object InvalidResults extends NoSolution
 
 object Solution {
   def apply(singleNodeDistance: Int): Solution =
@@ -18,9 +21,6 @@ object Solution {
       distance = path.distance,
       steps = path.steps
     )
-
-  def apply(explanation: String): Solution =
-    NoSolution(explanation = explanation)
 }
 
 case class Path(steps: List[Node], distance: Int)

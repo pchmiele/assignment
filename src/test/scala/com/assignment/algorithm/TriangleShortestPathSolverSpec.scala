@@ -15,7 +15,7 @@ class TriangleShortestPathSolverSpec extends AnyFlatSpec with Matchers with Opti
         List.empty
       )
     )
-    algorithm.findShortestPath(input) shouldBe NoSolution("For single row input - it has to be of length == 1.")
+    algorithm.findShortestPath(input) shouldBe InvalidSingleRowTreeGiven
   }
 
   it should "find no solution for invalid input (single row with multiple elements)" in new Context {
@@ -24,7 +24,7 @@ class TriangleShortestPathSolverSpec extends AnyFlatSpec with Matchers with Opti
         List(7, 2, 3)
       )
     )
-    algorithm.findShortestPath(input) shouldBe NoSolution("For single row input - it has to be of length == 1.")
+    algorithm.findShortestPath(input) shouldBe InvalidSingleRowTreeGiven
   }
 
   it should "find valid solution for single node tree" in new Context {
@@ -65,7 +65,7 @@ class TriangleShortestPathSolverSpec extends AnyFlatSpec with Matchers with Opti
         List(11, 2, 10, 9)
       )
     )
-    algorithm.findShortestPath(input) shouldBe NoSolution("Found multiple minimal paths in given tree - this may be a result of invalid input data.")
+    algorithm.findShortestPath(input) shouldBe InvalidResults
   }
 
   trait Context {

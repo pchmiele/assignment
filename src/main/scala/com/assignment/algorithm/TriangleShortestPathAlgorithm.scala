@@ -1,7 +1,7 @@
 package com.assignment.algorithm
 
 import cats.Applicative
-import com.assignment.domain.{Node, Path, RowsInReverseOrder, Solution}
+import com.assignment.domain.{InvalidResults, InvalidSingleRowTreeGiven, Node, Path, RowsInReverseOrder, Solution}
 
 trait TriangleShortestPathAlgorithm[F[_]] {
   def findShortestPath(input: RowsInReverseOrder): F[Solution]
@@ -23,7 +23,7 @@ class TriangleShortestPathSolver[F[_]: Applicative] extends TriangleShortestPath
     val rows = input.rows
     rows.tail match {
       case Nil if rows.head.length != 1 =>
-        Applicative[F].pure(Solution("For single row input - it has to be of length == 1."))
+        Applicative[F].pure(InvalidSingleRowTreeGiven)
 
       case Nil =>
         Applicative[F].pure(Solution(rows.head.head))
@@ -34,7 +34,7 @@ class TriangleShortestPathSolver[F[_]: Applicative] extends TriangleShortestPath
         val result = previousRows.foldLeft(initialState)(updateShortestPathInRow)
 
         if(result.length == 1) Applicative[F].pure(Solution(result.head))
-        else Applicative[F].pure(Solution("Found multiple minimal paths in given tree - this may be a result of invalid input data."))
+        else Applicative[F].pure(InvalidResults)
     }
   }
 }

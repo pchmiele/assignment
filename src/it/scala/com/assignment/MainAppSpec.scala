@@ -24,6 +24,10 @@ class MainAppSpec extends AnyFlatSpec with Matchers with OptionValues {
     compare(s"SingleNodeTree.txt", "Minimal path is: 1")
   }
 
+  it should "work correctly when invalid (single row) tree provided" in new Context {
+    compare(s"InvalidSingleRowTree.txt", "Could not find a solution for given input data. Here is a reason why: For single row input it has to be of length == 1.")
+  }
+
   trait Context {
     def compare(inputFileName: String, expectedOutput: String): Assertion = {
       val inputPath = new File(getClass.getResource("/" + inputFileName).getFile).getAbsolutePath
