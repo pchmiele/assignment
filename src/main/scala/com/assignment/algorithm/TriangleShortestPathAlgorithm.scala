@@ -3,6 +3,8 @@ package com.assignment.algorithm
 import cats.Applicative
 import com.assignment.domain.{InvalidResults, InvalidSingleRowTreeGiven, Node, Path, RowsInReverseOrder, Solution}
 
+import scala.collection.immutable.Queue
+
 trait TriangleShortestPathAlgorithm[F[_]] {
   def findShortestPath(input: RowsInReverseOrder): F[Solution]
 }
@@ -13,9 +15,10 @@ class TriangleShortestPathSolver[F[_]: Applicative] extends TriangleShortestPath
     Path.updatePath(shorterPath, currentNode)
   }
 
-  private def updateShortestPathInRow(initialState: List[Path], row: List[Node]): List[Path] = {
-    initialState.sliding(2).zip(row).foldRight(List.empty[Path]) {
-      case ((List(leftPath, rightPath), node), pathsAcc) => choseShorterPath(node, leftPath, rightPath) :: pathsAcc
+  private def updateShortestPathInRow(initialState: Queue[Path], row: Queue[Node]): Queue[Path] = {
+    initialState.sliding(2).zip(row).foldLeft(Queue.empty[Path]) {
+      case (pathsAcc, (Queue(leftPath, rightPath), node)) =>
+        pathsAcc.enqueue(choseShorterPath(node, leftPath, rightPath))
     }
   }
 
