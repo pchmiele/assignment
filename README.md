@@ -43,5 +43,13 @@ sbt test
 sbt it:test
 ```
 * All available tests:
-``````
+```
 sbt test it:test
+```
+
+### Important
+
+After I submitted the assignment I found out that there is one potential issue with current solution:
+- rows are treated as lists and in TriangleShortestPathSolver.scala:17 there is foldRight where list is reverted
+- it can be fixed by changing it to foldLeft, List to Queue and prepending to appending (enqueueing in this case)
+Thir [PR](https://github.com/pchmiele/assignment/pull/1) is taking care of this problem.
