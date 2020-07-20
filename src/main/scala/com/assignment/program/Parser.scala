@@ -4,12 +4,14 @@ import cats.effect.Sync
 import com.assignment.domain.{NoInputData, RowsInReverseOrder}
 import cats.implicits._
 
+import scala.collection.immutable.Queue
+
 trait Parser[F[_]] {
   def parse(): F[RowsInReverseOrder]
 }
 
 class ConsoleParser[F[_]: Sync](console: Console[F], validator: Validation[F]) extends Parser[F] {
-  private def parseLineByLine(alreadyParsedLines: List[List[Int]], currentRow: Int): F[RowsInReverseOrder] =
+  private def parseLineByLine(alreadyParsedLines: List[Queue[Int]], currentRow: Int): F[RowsInReverseOrder] =
     console.getStrLn.flatMap {
       case None =>
         Sync[F].fromOption(alreadyParsedLines.toNel.map(RowsInReverseOrder.apply), NoInputData)
@@ -17,7 +19,7 @@ class ConsoleParser[F[_]: Sync](console: Console[F], validator: Validation[F]) e
         val words = line.split(" ")
         for {
           _ <- validator.validateRow(words, currentRow)
-          numbers = words.map(_.toInt).toList
+          numbers = Queue.from(words.map(_.toInt))
           _ <- validator.validateRowLength(numbers, currentRow)
           parsedLine <- parseLineByLine(numbers :: alreadyParsedLines, currentRow + 1)
         } yield parsedLine
