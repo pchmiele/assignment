@@ -32,6 +32,11 @@ class MainAppSpec extends AnyFlatSpec with Matchers with OptionValues {
     compare(s"InvalidReversedTree.txt", "#3 Row has different size (2) than expected (3)")
   }
 
+  it should "work correctly for large input" in new Context {
+    lazy val expectedPath = List.fill(500)(1).mkString(" + ")
+    compare(s"LargeTree.txt", s"Minimal path is: $expectedPath = 500")
+  }
+
   trait Context {
     def compare(inputFileName: String, expectedOutput: String): Assertion = {
       val inputPath = new File(getClass.getResource("/" + inputFileName).getFile).getAbsolutePath
