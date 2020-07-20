@@ -2,19 +2,25 @@ package com.assignment.domain
 
 case class RowsInReverseOrder(rows: Rows)
 
-case class Solution(distance: Int, steps: List[Node])
+sealed trait Solution
+case class MinimalPath(distance: Int, steps: List[Node]) extends Solution
+case class NoSolution(explanation: String) extends Solution
+
 object Solution {
   def apply(singleNodeDistance: Int): Solution =
-    new Solution(
+    MinimalPath(
       distance = singleNodeDistance,
       steps = List(singleNodeDistance)
     )
 
   def apply(path: Path): Solution =
-    new Solution(
+    MinimalPath(
       distance = path.distance,
       steps = path.steps
     )
+
+  def apply(explanation: String): Solution =
+    NoSolution(explanation = explanation)
 }
 
 case class Path(steps: List[Node], distance: Int)
